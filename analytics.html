@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | SmartHome</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #07110f;
+            --panel: rgba(14, 30, 27, 0.78);
+            --panel-light: rgba(24, 48, 43, 0.72);
+            --border: rgba(117, 255, 213, 0.13);
+            --text: #f1fff9;
+            --muted: #8ca8a1;
+            --green: #65f5c7;
+            --blue: #62c7ff;
+            --yellow: #ffd86b;
+            --danger: #ff8585;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background:
+                linear-gradient(135deg, rgba(3, 12, 10, 0.94), rgba(4, 24, 20, 0.88)),
+                url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=85");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+            min-height: 100vh;
+            padding: 28px 18px;
+            background: rgba(3, 15, 13, 0.88);
+            backdrop-filter: blur(22px);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 5px 12px 35px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #65f5c7, #37aef0);
+            color: #06120f;
+            font-size: 19px;
+            font-weight: 800;
+            box-shadow: 0 0 25px rgba(101, 245, 199, 0.2);
+        }
+
+        .logo span {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo small {
+            color: var(--green);
+        }
+
+        .nav-title {
+            color: #536f68;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            padding: 0 13px 12px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--muted);
+            padding: 13px 14px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .nav a:hover {
+            background: rgba(101, 245, 199, 0.07);
+            color: var(--text);
+            transform: translateX(3px);
+        }
+
+        .nav a.active {
+            background: linear-gradient(
+                90deg,
+                rgba(101, 245, 199, 0.15),
+                rgba(98, 199, 255, 0.06)
+            );
+            color: var(--green);
+            border: 1px solid rgba(101, 245, 199, 0.08);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+        }
+
+        .cloud-status {
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(101, 245, 199, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .cloud-status-title {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 7px;
+        }
+
+        .online {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            color: var(--green);
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            padding: 35px 40px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .page-title h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px 8px 8px;
+            border: 1px solid var(--border);
+            background: rgba(15, 31, 28, 0.65);
+            border-radius: 30px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--green), var(--blue));
+            color: #05110e;
+            font-weight: 800;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .profile-info span {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        /* METRICS */
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .metric {
+            padding: 20px;
+            border-radius: 18px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric::after {
+            content: "";
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            right: -35px;
+            top: -35px;
+            background: rgba(101, 245, 199, 0.06);
+        }
+
+        .metric-label {
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .metric-value.green {
+            color: var(--green);
+        }
+
+        .metric-value.blue {
+            color: var(--blue);
+        }
+
+        .metric-value.yellow {
+            color: var(--yellow);
+        }
+
+        .metric-note {
+            color: #638078;
+            font-size: 10px;
+            margin-top: 7px;
+        }
+
+        /* GRID */
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            backdrop-filter: blur(20px);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .panel-header span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .chart-container {
+            height: 310px;
+            position: relative;
+        }
+
+        /* DONUT */
+
+        .donut-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            min-height: 310px;
+        }
+
+        .donut-chart {
+            width: 220px;
+            height: 220px;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 150px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .legend-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-value {
+            margin-left: auto;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* INSIGHTS */
+
+        .insights {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .insight {
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(9, 23, 20, 0.78);
+            border: 1px solid var(--border);
+        }
+
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(101, 245, 199, 0.08);
+            font-size: 19px;
+            margin-bottom: 15px;
+        }
+
+        .insight h3 {
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .insight p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .saving {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        /* EFFICIENCY */
+
+        .efficiency {
+            margin-top: 18px;
+        }
+
+        .efficiency-row {
+            margin-bottom: 19px;
+        }
+
+        .efficiency-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .efficiency-head span:last-child {
+            color: var(--green);
+        }
+
+        .progress {
+            height: 7px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--green), var(--blue));
+        }
+
+        .empty {
+            height: 100%;
+            min-height: 250px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1050px) {
+            .metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .insights {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+                height: auto;
+            }
+
+            .app {
+                display: block;
+            }
+
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .nav {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 25px 16px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .page-title h1 {
+                font-size: 27px;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .donut-wrap {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding: 22px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">⌂</div>
+            <span>Smart<small>Home</small></span>
+        </div>
+
+        <div class="nav-title">MAIN MENU</div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html">
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </a>
+
+            <a href="appliances.html">
+                <span class="nav-icon">◉</span>
+                Appliances
+            </a>
+
+            <a href="history.html">
+                <span class="nav-icon">◷</span>
+                Usage History
+            </a>
+
+            <a href="analytics.html" class="active">
+                <span class="nav-icon">◒</span>
+                Analytics
+            </a>
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="cloud-status">
+                <div class="cloud-status-title">
+                    CLOUD CONNECTION
+                </div>
+
+                <div class="online">
+                    <span class="dot"></span>
+                    Firebase Connected
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="page-title">
+                <h1>Energy Analytics</h1>
+                <p>Understand where your home's energy is going.</p>
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar" id="avatar">
+                    U
+                </div>
+
+                <div class="profile-info">
+                    <strong id="userName">User</strong>
+                    <span>Home Owner</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- METRICS -->
+        <section class="metrics">
+
+            <div class="metric">
+                <div class="metric-label">
+                    DAILY ENERGY
+                </div>
+
+                <div class="metric-value green" id="dailyEnergy">
+                    0.00 kWh
+                </div>
+
+                <div class="metric-note">
+                    Estimated from appliance usage
+                </div>
+            </div>
+
+
+            <div class="metric">
+                <div class="metric-label">
+                    MONTHLY ENERGY
+                </div>
+
+                <div class="metric-value blue" id="monthlyEnergy">
+                    0.00 kWh
+                </div>
+
+                <div class="metric-note">
+                    Based on 30 days
+                </div>
+            </div>
+
+
+            <div class="metric">
+                <div class="metric-label">
+                    MONTHLY COST
+                </div>
+
+                <div class="metric-value yellow" id="monthlyCost">
+                    ₹0
+                </div>
+
+                <div class="metric-note">
+                    Estimated at ₹8 / kWh
+                </div>
+            </div>
+
+
+            <div class="metric">
+                <div class="metric-label">
+                    TOP CONSUMER
+                </div>
+
+                <div class="metric-value" id="topConsumer">
+                    —
+                </div>
+
+                <div class="metric-note" id="topConsumerEnergy">
+                    No appliance data
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- CHARTS -->
+        <section class="analytics-grid">
+
+            <!-- BAR CHART -->
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h2>Appliance Consumption</h2>
+                    <span>kWh / day</span>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- DONUT -->
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h2>Energy Contribution</h2>
+                    <span>By appliance</span>
+                </div>
+
+                <div class="donut-wrap">
+
+                    <div class="donut-chart">
+                        <canvas id="donutChart"></canvas>
+                    </div>
+
+                    <div class="legend" id="legend">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INSIGHTS -->
+        <div class="panel">
+
+            <div class="panel-header">
+                <h2>Smart Energy Insights</h2>
+                <span>Based on current usage</span>
+            </div>
+
+            <div class="insights">
+
+                <div class="insight">
+
+                    <div class="insight-icon">
+                        ⚡
+                    </div>
+
+                    <h3>Highest Consumption</h3>
+
+                    <p id="highestInsight">
+                        Add appliances to generate energy insights.
+                    </p>
+
+                </div>
+
+
+                <div class="insight">
+
+                    <div class="insight-icon">
+                        💰
+                    </div>
+
+                    <h3>Potential Savings</h3>
+
+                    <p id="savingInsight">
+                        Reduce appliance usage by 10% to estimate your potential savings.
+                    </p>
+
+                </div>
+
+
+                <div class="insight">
+
+                    <div class="insight-icon">
+                        🌱
+                    </div>
+
+                    <h3>Energy Efficiency</h3>
+
+                    <p id="efficiencyInsight">
+                        Your efficiency information will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- EFFICIENCY -->
+        <div class="panel efficiency">
+
+            <div class="panel-header">
+                <h2>Appliance Energy Distribution</h2>
+                <span>Relative consumption</span>
+            </div>
+
+            <div id="efficiencyContainer">
+                <div class="empty">
+                    Add appliances to view distribution.
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script type="module">
+
+    import {
+        auth,
+        database,
+        ref,
+        get,
+        onAuthStateChanged
+    } from "./firebase.js";
+
+    let barChart;
+    let donutChart;
+
+
+    /* ESCAPE HTML */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* ICON */
+
+    function getIcon(type) {
+
+        const icons = {
+            AC: "❄️",
+            Fan: "🌀",
+            Light: "💡",
+            TV: "📺",
+            Refrigerator: "🧊",
+            Computer: "💻",
+            "Washing Machine": "🧺"
+        };
+
+        return icons[type] || "⚡";
+    }
+
+
+    /* LOAD USER */
+
+    async function loadAnalytics(user) {
+
+        try {
+
+            const userRef = ref(database, `users/${user.uid}`);
+
+            const snapshot = await get(userRef);
+
+            if (!snapshot.exists()) {
+                return;
+            }
+
+            const data = snapshot.val();
+
+            const profile = data || {};
+
+            const name =
+                profile.name ||
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "User";
+
+            document.getElementById("userName").textContent = name;
+
+            document.getElementById("avatar").textContent =
+                name.charAt(0).toUpperCase();
+
+
+            const appliances = profile.appliances || {};
+
+            const list = Object.values(appliances);
+
+
+            if (list.length === 0) {
+
+                showEmpty();
+
+                return;
+            }
+
+
+            const processed = list.map(item => {
+
+                const power = Number(item.powerW) || 0;
+
+                const hours = Number(item.hoursPerDay) || 0;
+
+                const energy =
+                    Number(item.energyPerDay) ||
+                    (power * hours / 1000);
+
+                return {
+                    name: item.name || "Unnamed Appliance",
+                    type: item.type || "Other",
+                    power,
+                    hours,
+                    energy,
+                    status: item.status || "OFF"
+                };
+
+            });
+
+
+            renderAnalytics(processed);
+
+        } catch (error) {
+
+            console.error("Analytics error:", error);
+
+        }
+
+    }
+
+
+    /* RENDER */
+
+    function renderAnalytics(appliances) {
+
+        const totalDaily =
+            appliances.reduce(
+                (sum, item) => sum + item.energy,
+                0
+            );
+
+
+        const monthlyEnergy =
+            totalDaily * 30;
+
+        const monthlyCost =
+            monthlyEnergy * 8;
+
+
+        const top =
+            [...appliances]
+                .sort((a, b) => b.energy - a.energy)[0];
+
+
+        /* METRICS */
+
+        document.getElementById("dailyEnergy").textContent =
+            totalDaily.toFixed(2) + " kWh";
+
+        document.getElementById("monthlyEnergy").textContent =
+            monthlyEnergy.toFixed(2) + " kWh";
+
+        document.getElementById("monthlyCost").textContent =
+            "₹" + monthlyCost.toFixed(0);
+
+        document.getElementById("topConsumer").textContent =
+            top ? top.name : "—";
+
+        document.getElementById("topConsumerEnergy").textContent =
+            top
+                ? `${top.energy.toFixed(2)} kWh/day`
+                : "No appliance data";
+
+
+        /* INSIGHTS */
+
+        const saving =
+            monthlyCost * 0.10;
+
+        document.getElementById("highestInsight").innerHTML =
+            top
+                ? `<strong>${escapeHTML(top.name)}</strong> currently uses
+                   <strong>${top.energy.toFixed(2)} kWh/day</strong>,
+                   making it the largest energy consumer.`
+                : "No data available.";
+
+
+        document.getElementById("savingInsight").innerHTML =
+            `A 10% reduction in usage could save approximately
+             <span class="saving">₹${saving.toFixed(0)}</span>
+             per month.`;
+
+
+        let efficiencyText = "Your current energy profile is ready for analysis.";
+
+        if (totalDaily < 5) {
+            efficiencyText =
+                "Your estimated daily usage is relatively low. Continue monitoring high-power appliances.";
+        }
+        else if (totalDaily < 10) {
+            efficiencyText =
+                "Your estimated daily usage is moderate. Focus on reducing high-power appliance runtime.";
+        }
+        else {
+            efficiencyText =
+                "Your estimated daily usage is high. Review AC, refrigerator and other high-power appliances.";
+        }
+
+        document.getElementById("efficiencyInsight").textContent =
+            efficiencyText;
+
+
+        renderBarChart(appliances);
+
+        renderDonutChart(appliances);
+
+        renderEfficiency(appliances, totalDaily);
+
+    }
+
+
+    /* BAR CHART */
+
+    function renderBarChart(appliances) {
+
+        const sorted =
+            [...appliances]
+                .sort((a, b) => b.energy - a.energy);
+
+
+        const labels =
+            sorted.map(item => item.name);
+
+        const values =
+            sorted.map(item => item.energy);
+
+
+        if (barChart) {
+            barChart.destroy();
+        }
+
+
+        const ctx =
+            document.getElementById("barChart");
+
+
+        barChart = new Chart(ctx, {
+
+            type: "bar",
+
+            data: {
+
+                labels,
+
+                datasets: [{
+                    label: "Energy / Day",
+                    data: values,
+                    borderRadius: 8,
+                    backgroundColor: "rgba(101, 245, 199, 0.65)",
+                    borderColor: "#65f5c7",
+                    borderWidth: 1
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+                        ticks: {
+                            color: "#8ca8a1",
+                            font: {
+                                size: 10
+                            }
+                        },
+
+                        grid: {
+                            display: false
+                        }
+                    },
+
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            color: "#8ca8a1",
+                            font: {
+                                size: 10
+                            }
+                        },
+
+                        grid: {
+                            color: "rgba(255,255,255,0.05)"
+                        }
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* DONUT */
+
+    function renderDonutChart(appliances) {
+
+        const sorted =
+            [...appliances]
+                .sort((a, b) => b.energy - a.energy);
+
+
+        const labels =
+            sorted.map(item => item.name);
+
+        const values =
+            sorted.map(item => item.energy);
+
+
+        const colors = [
+            "#65f5c7",
+            "#62c7ff",
+            "#ffd86b",
+            "#ff8585",
+            "#b49cff",
+            "#ff9f68",
+            "#75e6da"
+        ];
+
+
+        if (donutChart) {
+            donutChart.destroy();
+        }
+
+
+        const ctx =
+            document.getElementById("donutChart");
+
+
+        donutChart = new Chart(ctx, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels,
+
+                datasets: [{
+
+                    data: values,
+
+                    backgroundColor:
+                        colors.slice(0, values.length),
+
+                    borderColor: "#0b1916",
+
+                    borderWidth: 3,
+
+                    hoverOffset: 8
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "72%",
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+
+            }
+
+        });
+
+
+        const total =
+            values.reduce((sum, value) => sum + value, 0);
+
+
+        const legend =
+            document.getElementById("legend");
+
+        legend.innerHTML = "";
+
+
+        sorted.forEach((item, index) => {
+
+            const percentage =
+                total > 0
+                    ? (item.energy / total) * 100
+                    : 0;
+
+
+            const div =
+                document.createElement("div");
+
+            div.className = "legend-item";
+
+            div.innerHTML = `
+
+                <span
+                    class="legend-dot"
+                    style="background:${colors[index % colors.length]}"
+                ></span>
+
+                <span>
+                    ${escapeHTML(item.name)}
+                </span>
+
+                <span class="legend-value">
+                    ${percentage.toFixed(0)}%
+                </span>
+
+            `;
+
+            legend.appendChild(div);
+
+        });
+
+    }
+
+
+    /* EFFICIENCY */
+
+    function renderEfficiency(appliances, totalDaily) {
+
+        const container =
+            document.getElementById("efficiencyContainer");
+
+        container.innerHTML = "";
+
+
+        const sorted =
+            [...appliances]
+                .sort((a, b) => b.energy - a.energy);
+
+
+        sorted.forEach(item => {
+
+            const percentage =
+                totalDaily > 0
+                    ? (item.energy / totalDaily) * 100
+                    : 0;
+
+
+            const row =
+                document.createElement("div");
+
+            row.className = "efficiency-row";
+
+            row.innerHTML = `
+
+                <div class="efficiency-head">
+
+                    <span>
+                        ${getIcon(item.type)}
+                        &nbsp;
+                        ${escapeHTML(item.name)}
+                    </span>
+
+                    <span>
+                        ${percentage.toFixed(1)}%
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${Math.min(percentage, 100)}%"
+                    ></div>
+
+                </div>
+
+            `;
+
+            container.appendChild(row);
+
+        });
+
+    }
+
+
+    /* EMPTY */
+
+    function showEmpty() {
+
+        document.getElementById("dailyEnergy").textContent =
+            "0.00 kWh";
+
+        document.getElementById("monthlyEnergy").textContent =
+            "0.00 kWh";
+
+        document.getElementById("monthlyCost").textContent =
+            "₹0";
+
+        document.getElementById("topConsumer").textContent =
+            "—";
+
+        document.getElementById("topConsumerEnergy").textContent =
+            "No appliance data";
+
+
+        document.getElementById("highestInsight").textContent =
+            "Add appliances from the Appliances page to generate energy insights.";
+
+        document.getElementById("savingInsight").textContent =
+            "Once appliance data is available, potential monthly savings will be calculated.";
+
+        document.getElementById("efficiencyInsight").textContent =
+            "Add your home appliances to start analyzing energy efficiency.";
+
+
+        document.getElementById("efficiencyContainer").innerHTML = `
+            <div class="empty">
+                No appliance data available yet.
+            </div>
+        `;
+
+    }
+
+
+    /* AUTH GUARD */
+
+    onAuthStateChanged(auth, user => {
+
+        if (!user) {
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+        loadAnalytics(user);
+
+    });
+
+</script>
+
+</body>
+</html>

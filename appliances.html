@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartHome | Appliances</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"DM Sans",sans-serif;
+    color:#fff;
+    min-height:100vh;
+
+    background:
+        linear-gradient(rgba(1,12,20,.94),rgba(1,12,20,.97)),
+        url("https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2000&q=90")
+        center/cover fixed;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:245px;
+    flex-shrink:0;
+    background:rgba(2,15,24,.92);
+    border-right:1px solid rgba(255,255,255,.08);
+    padding:25px 18px;
+    backdrop-filter:blur(25px);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px;
+    margin-bottom:40px;
+}
+
+.logo-icon{
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00e6bd,#147dff);
+    font-size:20px;
+}
+
+.logo strong{
+    font-size:18px;
+}
+
+.logo span{
+    color:#00e6bd;
+}
+
+.nav-title{
+    color:#5d747c;
+    font-size:11px;
+    letter-spacing:1.5px;
+    margin:0 12px 12px;
+}
+
+.nav a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin:5px 0;
+    border-radius:12px;
+    text-decoration:none;
+    color:#9aafb5;
+    font-size:14px;
+    transition:.25s;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:linear-gradient(
+        90deg,
+        rgba(0,230,189,.16),
+        rgba(0,230,189,.04)
+    );
+
+    color:#5fffe5;
+}
+
+.nav-icon{
+    width:24px;
+    text-align:center;
+}
+
+.sidebar-bottom{
+    margin-top:100px;
+    padding:15px;
+    border-radius:17px;
+
+    background:linear-gradient(
+        145deg,
+        rgba(0,230,189,.13),
+        rgba(20,125,255,.08)
+    );
+
+    border:1px solid rgba(0,230,189,.13);
+}
+
+.sidebar-bottom strong{
+    color:#52ffe1;
+    display:block;
+    margin-bottom:5px;
+}
+
+.sidebar-bottom p{
+    font-size:12px;
+    color:#83999f;
+    line-height:1.5;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    flex:1;
+    padding:30px;
+    overflow:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.page-title h1{
+    font-family:"Playfair Display",serif;
+    font-size:34px;
+}
+
+.page-title h1 span{
+    color:#00e6bd;
+}
+
+.page-title p{
+    color:#80969d;
+    margin-top:6px;
+    font-size:14px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:9px 14px;
+    border-radius:15px;
+
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    background:linear-gradient(135deg,#00e6bd,#187cff);
+    font-weight:700;
+}
+
+/* ================= CONTENT GRID ================= */
+
+.content-grid{
+    display:grid;
+    grid-template-columns:390px 1fr;
+    gap:20px;
+}
+
+/* ================= FORM ================= */
+
+.form-panel{
+    padding:25px;
+    border-radius:22px;
+
+    background:rgba(5,25,34,.78);
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+}
+
+.panel-heading{
+    margin-bottom:25px;
+}
+
+.panel-heading h2{
+    font-size:19px;
+}
+
+.panel-heading p{
+    color:#71868d;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.field{
+    margin-bottom:17px;
+}
+
+.field label{
+    display:block;
+    color:#a9bbc0;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px 14px;
+
+    background:rgba(255,255,255,.045);
+
+    border:1px solid rgba(255,255,255,.10);
+
+    border-radius:11px;
+
+    color:white;
+
+    outline:none;
+
+    font-family:inherit;
+}
+
+select option{
+    background:#071b24;
+    color:white;
+}
+
+input:focus,
+select:focus{
+    border-color:#00e6bd;
+
+    box-shadow:
+        0 0 0 3px rgba(0,230,189,.07);
+}
+
+input::placeholder{
+    color:#526970;
+}
+
+/* ================= POWER PREVIEW ================= */
+
+.power-preview{
+    margin:20px 0;
+    padding:17px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,230,189,.09),
+            rgba(20,125,255,.07)
+        );
+
+    border:1px solid rgba(0,230,189,.10);
+}
+
+.preview-label{
+    color:#71868d;
+    font-size:11px;
+}
+
+.preview-value{
+    margin-top:7px;
+    font-size:26px;
+    font-weight:700;
+}
+
+.preview-value span{
+    color:#73888f;
+    font-size:12px;
+    font-weight:400;
+}
+
+.preview-energy{
+    color:#00e6bd;
+    font-size:12px;
+    margin-top:5px;
+}
+
+/* ================= BUTTON ================= */
+
+.save-btn{
+    width:100%;
+    padding:14px;
+
+    border:none;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00e6bd,
+            #00a991
+        );
+
+    color:#00201d;
+
+    font-size:14px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.save-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(0,230,189,.15);
+}
+
+/* ================= MESSAGE ================= */
+
+.message{
+    min-height:20px;
+    text-align:center;
+    font-size:12px;
+    margin-top:12px;
+}
+
+/* ================= LIST PANEL ================= */
+
+.list-panel{
+    padding:25px;
+
+    border-radius:22px;
+
+    background:rgba(5,25,34,.78);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+}
+
+.list-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.list-header h2{
+    font-size:19px;
+}
+
+.count{
+    padding:6px 10px;
+    border-radius:20px;
+
+    background:rgba(0,230,189,.08);
+
+    color:#00e6bd;
+
+    font-size:11px;
+}
+
+/* ================= APPLIANCE CARDS ================= */
+
+.appliance-list{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:13px;
+}
+
+.appliance-card{
+    position:relative;
+
+    padding:19px;
+
+    border-radius:17px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid rgba(255,255,255,.07);
+
+    transition:.25s;
+}
+
+.appliance-card:hover{
+    border-color:rgba(0,230,189,.22);
+
+    transform:translateY(-2px);
+}
+
+.appliance-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+.appliance-title{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.appliance-icon{
+    width:43px;
+    height:43px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,230,189,.14),
+            rgba(20,125,255,.12)
+        );
+
+    font-size:21px;
+}
+
+.appliance-title strong{
+    font-size:14px;
+}
+
+.appliance-type{
+    color:#657c83;
+    font-size:10px;
+    margin-top:4px;
+}
+
+.status{
+    font-size:9px;
+
+    padding:5px 8px;
+
+    border-radius:20px;
+
+    background:rgba(0,230,189,.08);
+
+    color:#4dffc5;
+}
+
+.status.off{
+    background:rgba(255,255,255,.06);
+    color:#748990;
+}
+
+.appliance-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+    margin-top:20px;
+}
+
+.info-box{
+    padding:11px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.025);
+}
+
+.info-box small{
+    display:block;
+
+    color:#61777e;
+
+    font-size:9px;
+
+    margin-bottom:4px;
+}
+
+.info-box strong{
+    font-size:14px;
+}
+
+.card-actions{
+    display:flex;
+    gap:8px;
+
+    margin-top:15px;
+}
+
+.toggle-btn,
+.delete-btn{
+
+    flex:1;
+
+    padding:9px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    font-size:10px;
+
+    font-family:inherit;
+}
+
+.toggle-btn{
+
+    border:1px solid rgba(0,230,189,.18);
+
+    background:rgba(0,230,189,.07);
+
+    color:#00e6bd;
+}
+
+.delete-btn{
+
+    border:1px solid rgba(255,100,100,.14);
+
+    background:rgba(255,80,80,.05);
+
+    color:#ff8585;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+    grid-column:1/-1;
+
+    text-align:center;
+
+    padding:70px 20px;
+
+    color:#687e85;
+}
+
+.empty-icon{
+    font-size:45px;
+    margin-bottom:15px;
+}
+
+.empty strong{
+    display:block;
+    color:#a9babe;
+    margin-bottom:7px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1050px){
+
+    .content-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:75px;
+        padding:20px 10px;
+    }
+
+    .logo strong,
+    .nav-title,
+    .nav a span,
+    .sidebar-bottom{
+        display:none;
+    }
+
+    .logo{
+        justify-content:center;
+    }
+
+    .nav a{
+        justify-content:center;
+    }
+
+    .main{
+        padding:20px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .appliance-list{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            ⌂
+        </div>
+
+        <strong>
+            Smart<span>Home</span>
+        </strong>
+
+    </div>
+
+    <div class="nav-title">
+        WORKSPACE
+    </div>
+
+    <div class="nav">
+
+        <a href="dashboard.html">
+
+            <div class="nav-icon">⌂</div>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+        <a href="appliances.html" class="active">
+
+            <div class="nav-icon">⚡</div>
+
+            <span>
+                Appliances
+            </span>
+
+        </a>
+
+        <a href="history.html">
+
+            <div class="nav-icon">◷</div>
+
+            <span>
+                Usage History
+            </span>
+
+        </a>
+
+        <a href="analytics.html">
+
+            <div class="nav-icon">▥</div>
+
+            <span>
+                Analytics
+            </span>
+
+        </a>
+
+        <a href="settings.html">
+
+            <div class="nav-icon">⚙</div>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <strong>
+            Save Energy
+        </strong>
+
+        <p>
+            Smarter energy decisions
+            start with better visibility.
+        </p>
+
+    </div>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div class="page-title">
+
+            <h1>
+                Your <span>Appliances</span>
+            </h1>
+
+            <p>
+                Manage appliances and track their estimated energy usage.
+            </p>
+
+        </div>
+
+        <div class="profile">
+
+            <div class="avatar" id="avatar">
+                H
+            </div>
+
+            <div>
+
+                <strong id="profileName">
+                    Homeowner
+                </strong>
+
+                <div style="
+                    color:#71868d;
+                    font-size:10px;
+                    margin-top:2px;
+                ">
+                    Smart Home
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content-grid">
+
+
+        <!-- ================= ADD FORM ================= -->
+
+        <section class="form-panel">
+
+            <div class="panel-heading">
+
+                <h2>
+                    Add New Appliance
+                </h2>
+
+                <p>
+                    Enter the appliance details to add it to your home.
+                </p>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Appliance Name
+                </label>
+
+                <input
+                    type="text"
+                    id="applianceName"
+                    placeholder="Example: Bedroom AC"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Appliance Type
+                </label>
+
+                <select id="applianceType">
+
+                    <option value="">
+                        Select appliance type
+                    </option>
+
+                    <option value="AC">
+                        ❄️ Air Conditioner
+                    </option>
+
+                    <option value="Fan">
+                        🌀 Fan
+                    </option>
+
+                    <option value="Light">
+                        💡 Light
+                    </option>
+
+                    <option value="TV">
+                        📺 Television
+                    </option>
+
+                    <option value="Refrigerator">
+                        🧊 Refrigerator
+                    </option>
+
+                    <option value="Computer">
+                        💻 Computer
+                    </option>
+
+                    <option value="Washing Machine">
+                        🧺 Washing Machine
+                    </option>
+
+                    <option value="Other">
+                        ⚡ Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Power Consumption (Watts)
+                </label>
+
+                <input
+                    type="number"
+                    id="power"
+                    placeholder="Example: 1500"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Usage Per Day (Hours)
+                </label>
+
+                <input
+                    type="number"
+                    id="hours"
+                    placeholder="Example: 4"
+                    min="0"
+                    max="24"
+                    step="0.5"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Current Status
+                </label>
+
+                <select id="status">
+
+                    <option value="ON">
+                        🟢 ON
+                    </option>
+
+                    <option value="OFF">
+                        ⚪ OFF
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PREVIEW -->
+
+            <div class="power-preview">
+
+                <div class="preview-label">
+                    Estimated Daily Consumption
+                </div>
+
+                <div class="preview-value">
+
+                    <span id="previewEnergy">
+                        0.00
+                    </span>
+
+                    <span>
+                        kWh / day
+                    </span>
+
+                </div>
+
+                <div class="preview-energy">
+                    Based on power × daily usage
+                </div>
+
+            </div>
+
+
+            <button
+                class="save-btn"
+                id="saveBtn"
+            >
+                + Add Appliance
+            </button>
+
+
+            <div
+                class="message"
+                id="message"
+            ></div>
+
+        </section>
+
+
+        <!-- ================= APPLIANCE LIST ================= -->
+
+        <section class="list-panel">
+
+            <div class="list-header">
+
+                <h2>
+                    Connected Appliances
+                </h2>
+
+                <div
+                    class="count"
+                    id="count"
+                >
+                    0 appliances
+                </div>
+
+            </div>
+
+
+            <div
+                class="appliance-list"
+                id="applianceList"
+            >
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        ⚡
+                    </div>
+
+                    <strong>
+                        Loading appliances...
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script type="module">
+
+import {
+    auth,
+    database,
+    ref,
+    push,
+    set,
+    get,
+    update,
+    remove,
+    onAuthStateChanged
+} from "./firebase.js";
+
+
+let currentUser = null;
+
+
+/* ================= AUTH ================= */
+
+onAuthStateChanged(auth, async user => {
+
+    if(!user){
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+    currentUser = user;
+
+    await loadProfile();
+
+    await loadAppliances();
+
+});
+
+
+/* ================= PROFILE ================= */
+
+async function loadProfile(){
+
+    try{
+
+        const snapshot =
+            await get(
+                ref(
+                    database,
+                    `users/${currentUser.uid}`
+                )
+            );
+
+        if(snapshot.exists()){
+
+            const data =
+                snapshot.val();
+
+            const name =
+                data.name || "Homeowner";
+
+            document.getElementById(
+                "profileName"
+            ).textContent = name;
+
+            document.getElementById(
+                "avatar"
+            ).textContent =
+                name.charAt(0).toUpperCase();
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= PREVIEW ================= */
+
+const powerInput =
+    document.getElementById("power");
+
+const hoursInput =
+    document.getElementById("hours");
+
+function updatePreview(){
+
+    const power =
+        Number(powerInput.value) || 0;
+
+    const hours =
+        Number(hoursInput.value) || 0;
+
+    const energy =
+        (power * hours) / 1000;
+
+    document.getElementById(
+        "previewEnergy"
+    ).textContent =
+        energy.toFixed(2);
+
+}
+
+powerInput.addEventListener(
+    "input",
+    updatePreview
+);
+
+hoursInput.addEventListener(
+    "input",
+    updatePreview
+);
+
+
+/* ================= SAVE APPLIANCE ================= */
+
+document.getElementById(
+    "saveBtn"
+).addEventListener(
+    "click",
+    saveAppliance
+);
+
+
+async function saveAppliance(){
+
+    const name =
+        document.getElementById(
+            "applianceName"
+        ).value.trim();
+
+    const type =
+        document.getElementById(
+            "applianceType"
+        ).value;
+
+    const power =
+        Number(
+            document.getElementById(
+                "power"
+            ).value
+        );
+
+    const hours =
+        Number(
+            document.getElementById(
+                "hours"
+            ).value
+        );
+
+    const status =
+        document.getElementById(
+            "status"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    /* VALIDATION */
+
+    if(!name){
+
+        showMessage(
+            "Please enter appliance name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!type){
+
+        showMessage(
+            "Please select appliance type.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!power || power <= 0){
+
+        showMessage(
+            "Enter a valid power value.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(hours < 0 || hours > 24){
+
+        showMessage(
+            "Usage must be between 0 and 24 hours.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const applianceRef =
+            push(
+                ref(
+                    database,
+                    `users/${currentUser.uid}/appliances`
+                )
+            );
+
+
+        const applianceData = {
+
+            name:name,
+
+            type:type,
+
+            powerW:power,
+
+            hoursPerDay:hours,
+
+            status:status,
+
+            energyPerDay:
+                Number(
+                    ((power * hours) / 1000)
+                    .toFixed(3)
+                ),
+
+            createdAt:
+                Date.now(),
+
+            updatedAt:
+                Date.now()
+
+        };
+
+
+        await set(
+            applianceRef,
+            applianceData
+        );
+
+
+        showMessage(
+            "✓ Appliance added successfully.",
+            "success"
+        );
+
+
+        /* CLEAR FORM */
+
+        document.getElementById(
+            "applianceName"
+        ).value = "";
+
+        document.getElementById(
+            "applianceType"
+        ).value = "";
+
+        document.getElementById(
+            "power"
+        ).value = "";
+
+        document.getElementById(
+            "hours"
+        ).value = "";
+
+        document.getElementById(
+            "status"
+        ).value = "ON";
+
+        document.getElementById(
+            "previewEnergy"
+        ).textContent = "0.00";
+
+
+        await loadAppliances();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Unable to save appliance. Check Firebase.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ================= LOAD APPLIANCES ================= */
+
+async function loadAppliances(){
+
+    const list =
+        document.getElementById(
+            "applianceList"
+        );
+
+    try{
+
+        const snapshot =
+            await get(
+                ref(
+                    database,
+                    `users/${currentUser.uid}/appliances`
+                )
+            );
+
+
+        if(!snapshot.exists()){
+
+            list.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        ⚡
+                    </div>
+
+                    <strong>
+                        No appliances yet
+                    </strong>
+
+                    <p>
+                        Add your first appliance
+                        using the form.
+                    </p>
+
+                </div>
+
+            `;
+
+            updateCount(0);
+
+            return;
+
+        }
+
+
+        const appliances =
+            snapshot.val();
+
+        const entries =
+            Object.entries(appliances);
+
+
+        updateCount(
+            entries.length
+        );
+
+
+        list.innerHTML = "";
+
+
+        entries.forEach(
+            ([id, appliance]) => {
+
+                renderAppliance(
+                    id,
+                    appliance,
+                    list
+                );
+
+            }
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <strong>
+                    Could not load appliances
+                </strong>
+
+                <p>
+                    Please check your Firebase
+                    Realtime Database.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ================= RENDER ================= */
+
+function renderAppliance(
+    id,
+    appliance,
+    list
+){
+
+    const icon =
+        getIcon(appliance.type);
+
+
+    const energy =
+        Number(
+            appliance.energyPerDay ||
+            (
+                (Number(appliance.powerW) || 0) *
+                (Number(appliance.hoursPerDay) || 0)
+            ) / 1000
+        );
+
+
+    const isOn =
+        appliance.status === "ON";
+
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "appliance-card";
+
+
+    card.innerHTML = `
+
+        <div class="appliance-top">
+
+            <div class="appliance-title">
+
+                <div class="appliance-icon">
+                    ${icon}
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${escapeHTML(appliance.name)}
+                    </strong>
+
+                    <div class="appliance-type">
+                        ${escapeHTML(appliance.type)}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="status ${isOn ? "" : "off"}">
+
+                ${isOn ? "● ON" : "○ OFF"}
+
+            </div>
+
+        </div>
+
+
+        <div class="appliance-info">
+
+            <div class="info-box">
+
+                <small>
+                    POWER
+                </small>
+
+                <strong>
+                    ${appliance.powerW} W
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <small>
+                    DAILY USAGE
+                </small>
+
+                <strong>
+                    ${appliance.hoursPerDay} hrs
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <small>
+                    ENERGY / DAY
+                </small>
+
+                <strong>
+                    ${energy.toFixed(2)} kWh
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <small>
+                    EST. COST
+                </small>
+
+                <strong>
+                    ₹${(energy * 8).toFixed(2)}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-actions">
+
+            <button
+                class="toggle-btn"
+                data-id="${id}"
+            >
+                ${isOn ? "Turn OFF" : "Turn ON"}
+            </button>
+
+
+            <button
+                class="delete-btn"
+                data-id="${id}"
+            >
+                Delete
+            </button>
+
+        </div>
+
+    `;
+
+
+    /* TOGGLE */
+
+    card.querySelector(
+        ".toggle-btn"
+    ).addEventListener(
+        "click",
+        () => toggleStatus(
+            id,
+            isOn
+        )
+    );
+
+
+    /* DELETE */
+
+    card.querySelector(
+        ".delete-btn"
+    ).addEventListener(
+        "click",
+        () => deleteAppliance(id)
+    );
+
+
+    list.appendChild(card);
+
+}
+
+
+/* ================= TOGGLE ================= */
+
+async function toggleStatus(
+    id,
+    currentStatus
+){
+
+    try{
+
+        await update(
+
+            ref(
+                database,
+                `users/${currentUser.uid}/appliances/${id}`
+            ),
+
+            {
+                status:
+                    currentStatus
+                        ? "OFF"
+                        : "ON",
+
+                updatedAt:
+                    Date.now()
+            }
+
+        );
+
+
+        await loadAppliances();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Unable to update appliance.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ================= DELETE ================= */
+
+async function deleteAppliance(id){
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to remove this appliance?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    try{
+
+        await remove(
+
+            ref(
+                database,
+                `users/${currentUser.uid}/appliances/${id}`
+            )
+
+        );
+
+
+        showMessage(
+            "Appliance removed.",
+            "success"
+        );
+
+
+        await loadAppliances();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Unable to delete appliance.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ================= COUNT ================= */
+
+function updateCount(count){
+
+    document.getElementById(
+        "count"
+    ).textContent =
+        `${count} appliance${count === 1 ? "" : "s"}`;
+
+}
+
+
+/* ================= ICON ================= */
+
+function getIcon(type){
+
+    const icons = {
+
+        "AC":"❄️",
+
+        "Fan":"🌀",
+
+        "Light":"💡",
+
+        "TV":"📺",
+
+        "Refrigerator":"🧊",
+
+        "Computer":"💻",
+
+        "Washing Machine":"🧺",
+
+        "Other":"⚡"
+
+    };
+
+    return icons[type] || "⚡";
+
+}
+
+
+/* ================= MESSAGE ================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    if(type === "success"){
+
+        message.style.color =
+            "#4dffc5";
+
+    }else{
+
+        message.style.color =
+            "#ff8585";
+
+    }
+
+
+    setTimeout(() => {
+
+        message.textContent = "";
+
+    },4000);
+
+}
+
+
+/* ================= SECURITY ================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartHome | Login</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    font-family:"DM Sans",sans-serif;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(135deg,rgba(2,15,23,.90),rgba(2,15,23,.78)),
+        url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=90")
+        center/cover fixed;
+}
+
+.wrapper{
+    width:min(1000px,92%);
+    min-height:620px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    background:rgba(4,22,30,.75);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:28px;
+    overflow:hidden;
+    backdrop-filter:blur(25px);
+    box-shadow:0 30px 100px rgba(0,0,0,.45);
+}
+
+.visual{
+    padding:55px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+
+    background:
+        linear-gradient(180deg,transparent,rgba(0,0,0,.8)),
+        url("https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=90")
+        center/cover;
+}
+
+.visual h1{
+    font-family:"Playfair Display",serif;
+    font-size:48px;
+    line-height:1.1;
+}
+
+.visual h1 span{
+    color:#00e6bd;
+}
+
+.visual p{
+    margin-top:15px;
+    color:#b4c5ca;
+    line-height:1.7;
+}
+
+.form-area{
+    padding:55px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.logo{
+    color:#00e6bd;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+h2{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#8fa4aa;
+    margin-bottom:30px;
+}
+
+.field{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    color:#b8c7cb;
+    margin-bottom:8px;
+}
+
+input{
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.055);
+    color:white;
+    outline:none;
+    font-size:14px;
+}
+
+input:focus{
+    border-color:#00e6bd;
+    box-shadow:0 0 0 3px rgba(0,230,189,.08);
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00e6bd,#00a98f);
+    color:#00201d;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+    margin-top:5px;
+}
+
+button:hover{
+    transform:translateY(-1px);
+}
+
+.switch{
+    text-align:center;
+    margin-top:20px;
+    color:#91a4aa;
+    font-size:14px;
+}
+
+.switch span{
+    color:#00e6bd;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.message{
+    min-height:20px;
+    margin-top:15px;
+    text-align:center;
+    font-size:13px;
+}
+
+.back{
+    display:inline-block;
+    margin-bottom:30px;
+    color:#8fa4aa;
+    text-decoration:none;
+    font-size:14px;
+}
+
+@media(max-width:750px){
+
+    .wrapper{
+        grid-template-columns:1fr;
+    }
+
+    .visual{
+        display:none;
+    }
+
+    .form-area{
+        padding:40px 28px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="visual">
+
+        <div>
+            <h1>
+                Power your home
+                <span>smarter.</span>
+            </h1>
+
+            <p>
+                Monitor electricity usage, understand
+                consumption patterns and build a more
+                energy-aware home.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="form-area">
+
+        <a href="index.html" class="back">
+            ← Back to SmartHome
+        </a>
+
+        <div class="logo">
+            ⚡ SmartHome Energy
+        </div>
+
+        <h2 id="formTitle">Welcome back</h2>
+
+        <p class="subtitle" id="formSubtitle">
+            Sign in to access your energy dashboard.
+        </p>
+
+        <div id="nameField" class="field" style="display:none;">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>Email Address</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+            >
+
+        </div>
+
+        <button id="submitBtn">
+            Sign In
+        </button>
+
+        <div class="message" id="message"></div>
+
+        <div class="switch">
+
+            <span id="switchText">
+                Don't have an account?
+            </span>
+
+            <span id="switchBtn">
+                Create one
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import {
+    auth,
+    database,
+    ref,
+    set,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword
+} from "./firebase.js";
+
+let isRegister = false;
+
+const formTitle = document.getElementById("formTitle");
+const formSubtitle = document.getElementById("formSubtitle");
+const nameField = document.getElementById("nameField");
+const submitBtn = document.getElementById("submitBtn");
+const switchText = document.getElementById("switchText");
+const switchBtn = document.getElementById("switchBtn");
+const message = document.getElementById("message");
+
+switchBtn.addEventListener("click", () => {
+
+    isRegister = !isRegister;
+
+    if(isRegister){
+
+        formTitle.textContent = "Create your account";
+
+        formSubtitle.textContent =
+            "Start monitoring your home's energy.";
+
+        nameField.style.display = "block";
+
+        submitBtn.textContent = "Create Account";
+
+        switchText.textContent =
+            "Already have an account?";
+
+        switchBtn.textContent = "Sign in";
+
+    }else{
+
+        formTitle.textContent = "Welcome back";
+
+        formSubtitle.textContent =
+            "Sign in to access your energy dashboard.";
+
+        nameField.style.display = "none";
+
+        submitBtn.textContent = "Sign In";
+
+        switchText.textContent =
+            "Don't have an account?";
+
+        switchBtn.textContent = "Create one";
+
+    }
+
+});
+
+submitBtn.addEventListener("click", async () => {
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    if(!email || !password){
+
+        message.textContent =
+            "Please enter email and password.";
+
+        return;
+    }
+
+    if(isRegister && !name){
+
+        message.textContent =
+            "Please enter your name.";
+
+        return;
+    }
+
+    message.textContent = "Please wait...";
+
+    try{
+
+        if(isRegister){
+
+            const result =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            await set(
+                ref(database, `users/${result.user.uid}`),
+                {
+                    name:name,
+                    email:email,
+                    createdAt:Date.now()
+                }
+            );
+
+            message.textContent =
+                "Account created successfully.";
+
+        }else{
+
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            message.textContent =
+                "Login successful.";
+
+        }
+
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        },700);
+
+    }catch(error){
+
+        console.error(error);
+
+        if(error.code === "auth/invalid-credential"){
+            message.textContent =
+                "Incorrect email or password.";
+        }
+        else if(error.code === "auth/email-already-in-use"){
+            message.textContent =
+                "This email is already registered.";
+        }
+        else if(error.code === "auth/weak-password"){
+            message.textContent =
+                "Password should be at least 6 characters.";
+        }
+        else{
+            message.textContent =
+                error.message;
+        }
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | SmartHome</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #07110f;
+            --panel: rgba(14, 30, 27, 0.78);
+            --panel-dark: rgba(7, 20, 17, 0.85);
+            --border: rgba(117, 255, 213, 0.13);
+
+            --text: #f1fff9;
+            --muted: #8ca8a1;
+
+            --green: #65f5c7;
+            --blue: #62c7ff;
+            --yellow: #ffd86b;
+            --red: #ff8585;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 12, 10, 0.95),
+                    rgba(4, 24, 20, 0.88)
+                ),
+                url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=85");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+
+            color: var(--text);
+
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 245px;
+            min-height: 100vh;
+
+            padding: 28px 18px;
+
+            background: rgba(3, 15, 13, 0.90);
+
+            backdrop-filter: blur(22px);
+
+            border-right: 1px solid var(--border);
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            z-index: 20;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 5px 12px 35px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 12px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #65f5c7,
+                    #37aef0
+                );
+
+            color: #06120f;
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 0 25px
+                rgba(101, 245, 199, 0.20);
+        }
+
+        .logo span {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo small {
+            color: var(--green);
+        }
+
+        .nav-title {
+            color: #536f68;
+
+            font-size: 10px;
+
+            letter-spacing: 2px;
+
+            font-weight: 700;
+
+            padding: 0 13px 12px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav a {
+            text-decoration: none;
+
+            color: var(--muted);
+
+            padding: 13px 14px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 14px;
+
+            transition: 0.25s;
+        }
+
+        .nav a:hover {
+            background:
+                rgba(101, 245, 199, 0.07);
+
+            color: var(--text);
+
+            transform: translateX(3px);
+        }
+
+        .nav a.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(101, 245, 199, 0.15),
+                    rgba(98, 199, 255, 0.06)
+                );
+
+            color: var(--green);
+
+            border:
+                1px solid
+                rgba(101, 245, 199, 0.08);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 18px;
+            right: 18px;
+        }
+
+        .cloud-status {
+            padding: 14px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(101, 245, 199, 0.05);
+
+            border:
+                1px solid
+                var(--border);
+        }
+
+        .cloud-status-title {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 7px;
+        }
+
+        .online {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            font-size: 12px;
+
+            color: var(--green);
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+
+            background: var(--green);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 10px
+                var(--green);
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+
+            width:
+                calc(100% - 245px);
+
+            padding:
+                35px 40px 50px;
+        }
+
+        .topbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 32px;
+
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        .profile {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                8px 12px 8px 8px;
+
+            border:
+                1px solid
+                var(--border);
+
+            background:
+                rgba(15, 31, 28, 0.65);
+
+            border-radius: 30px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 50%;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--blue)
+                );
+
+            color: #05110e;
+
+            font-weight: 800;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .profile-info span {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+
+        /* ================= SETTINGS GRID ================= */
+
+        .settings-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 18px;
+        }
+
+        .panel {
+            background:
+                var(--panel);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 20px;
+
+            padding: 24px;
+
+            backdrop-filter:
+                blur(20px);
+        }
+
+        .panel.full {
+            grid-column:
+                1 / -1;
+        }
+
+        .panel-header {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 24px;
+        }
+
+        .panel-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 13px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                rgba(101, 245, 199, 0.08);
+
+            color: var(--green);
+
+            font-size: 18px;
+        }
+
+        .panel-header h2 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+
+        /* ================= PROFILE ================= */
+
+        .profile-card {
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(5, 18, 15, 0.60);
+
+            border:
+                1px solid
+                var(--border);
+        }
+
+        .large-avatar {
+            width: 58px;
+            height: 58px;
+
+            border-radius: 18px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--blue)
+                );
+
+            color: #06120f;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            flex-shrink: 0;
+        }
+
+        .profile-card h3 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .profile-card p {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .user-id {
+            margin-top: 5px;
+            color: #56736b !important;
+            font-size: 9px !important;
+        }
+
+
+        /* ================= FORM ================= */
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding:
+                12px 13px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid
+                rgba(117, 255, 213, 0.12);
+
+            background:
+                rgba(4, 15, 13, 0.70);
+
+            color: var(--text);
+
+            outline: none;
+
+            font-family:
+                "DM Sans",
+                sans-serif;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color:
+                rgba(101, 245, 199, 0.50);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(101, 245, 199, 0.05);
+        }
+
+        .form-group input::placeholder {
+            color: #4d6760;
+        }
+
+        .save-btn {
+            width: 100%;
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    #49c8f5
+                );
+
+            color: #06120f;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(101, 245, 199, 0.15);
+        }
+
+
+        /* ================= BILL SETTINGS ================= */
+
+        .bill-info {
+            padding:
+                15px 16px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(101, 245, 199, 0.045);
+
+            border:
+                1px solid
+                var(--border);
+
+            margin-bottom: 18px;
+        }
+
+        .bill-info-title {
+            color: var(--green);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 6px;
+        }
+
+        .bill-info p {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ================= PREFERENCES ================= */
+
+        .preference {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+        .preference:last-child {
+            border-bottom: none;
+        }
+
+        .preference h3 {
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .preference p {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+
+        /* TOGGLE */
+
+        .switch {
+            position: relative;
+
+            width: 43px;
+            height: 23px;
+
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                rgba(255,255,255,0.10);
+
+            border-radius: 30px;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .slider::before {
+            content: "";
+
+            position: absolute;
+
+            width: 17px;
+            height: 17px;
+
+            left: 3px;
+            top: 3px;
+
+            background: #9bb2ac;
+
+            border-radius: 50%;
+
+            transition: 0.25s;
+        }
+
+        input:checked + .slider {
+            background:
+                rgba(101,245,199,0.28);
+        }
+
+        input:checked + .slider::before {
+            transform:
+                translateX(20px);
+
+            background:
+                var(--green);
+
+            box-shadow:
+                0 0 10px
+                rgba(101,245,199,0.45);
+        }
+
+
+        /* ================= DANGER ================= */
+
+        .danger-zone {
+            border-color:
+                rgba(255,133,133,0.15);
+        }
+
+        .danger-zone .panel-icon {
+            color: var(--red);
+
+            background:
+                rgba(255,133,133,0.08);
+        }
+
+        .logout-btn {
+            width: 100%;
+
+            padding: 12px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid
+                rgba(255,133,133,0.25);
+
+            background:
+                rgba(255,133,133,0.06);
+
+            color: var(--red);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .logout-btn:hover {
+            background:
+                rgba(255,133,133,0.12);
+        }
+
+        .delete-btn {
+            margin-top: 10px;
+
+            width: 100%;
+
+            padding: 10px;
+
+            background: transparent;
+
+            border: none;
+
+            color: #755a5a;
+
+            font-size: 10px;
+
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            color: var(--red);
+        }
+
+
+        /* ================= MESSAGE ================= */
+
+        .message {
+            display: none;
+
+            padding: 11px 14px;
+
+            border-radius: 10px;
+
+            margin-bottom: 15px;
+
+            font-size: 11px;
+        }
+
+        .message.success {
+            display: block;
+
+            color: var(--green);
+
+            background:
+                rgba(101,245,199,0.07);
+
+            border:
+                1px solid
+                rgba(101,245,199,0.15);
+        }
+
+        .message.error {
+            display: block;
+
+            color: var(--red);
+
+            background:
+                rgba(255,133,133,0.07);
+
+            border:
+                1px solid
+                rgba(255,133,133,0.15);
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 1000px) {
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel.full {
+                grid-column: auto;
+            }
+        }
+
+
+        @media (max-width: 760px) {
+
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                min-height: auto;
+            }
+
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .nav {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .main {
+                margin-left: 0;
+
+                width: 100%;
+
+                padding:
+                    25px 16px;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .page-title h1 {
+                font-size: 27px;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+
+            .nav {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding:
+                    22px 12px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .profile-card {
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ⌂
+            </div>
+
+            <span>
+                Smart<small>Home</small>
+            </span>
+
+        </div>
+
+
+        <div class="nav-title">
+            MAIN MENU
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="dashboard.html">
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </a>
+
+            <a href="appliances.html">
+                <span class="nav-icon">◉</span>
+                Appliances
+            </a>
+
+            <a href="history.html">
+                <span class="nav-icon">◷</span>
+                Usage History
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">◒</span>
+                Analytics
+            </a>
+
+            <a href="settings.html" class="active">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="cloud-status">
+
+                <div class="cloud-status-title">
+                    CLOUD CONNECTION
+                </div>
+
+                <div class="online">
+                    <span class="dot"></span>
+                    Firebase Connected
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <div class="topbar">
+
+            <div class="page-title">
+
+                <h1>Settings</h1>
+
+                <p>
+                    Manage your SmartHome profile and preferences.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div class="avatar" id="avatar">
+                    U
+                </div>
+
+                <div class="profile-info">
+
+                    <strong id="topUserName">
+                        User
+                    </strong>
+
+                    <span>
+                        Home Owner
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="message" class="message"></div>
+
+
+
+        <section class="settings-grid">
+
+
+            <!-- ================= PROFILE ================= -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div class="panel-icon">
+                        ◉
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Profile
+                        </h2>
+
+                        <p>
+                            Your SmartHome account information
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+                    <div
+                        class="large-avatar"
+                        id="largeAvatar"
+                    >
+                        U
+                    </div>
+
+                    <div>
+
+                        <h3 id="profileName">
+                            User
+                        </h3>
+
+                        <p id="profileEmail">
+                            Loading...
+                        </p>
+
+                        <p
+                            class="user-id"
+                            id="userId"
+                        >
+                            Account ID
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="profileForm">
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nameInput"
+                            placeholder="Enter your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="emailInput"
+                            disabled
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        Save Profile
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- ================= ELECTRICITY ================= -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div class="panel-icon">
+                        ₹
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Energy Settings
+                        </h2>
+
+                        <p>
+                            Configure your electricity calculation
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bill-info">
+
+                    <div class="bill-info-title">
+                        Electricity Rate
+                    </div>
+
+                    <p>
+                        This rate is used to estimate your daily
+                        and monthly electricity cost throughout
+                        the dashboard.
+                    </p>
+
+                </div>
+
+
+                <form id="energyForm">
+
+                    <div class="form-group">
+
+                        <label>
+                            Electricity Cost (₹ / kWh)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="rateInput"
+                            min="0"
+                            step="0.01"
+                            value="8"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Monthly Energy Target (kWh)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="targetInput"
+                            min="1"
+                            step="1"
+                            value="150"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        Save Energy Settings
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- ================= PREFERENCES ================= -->
+
+            <div class="panel full">
+
+                <div class="panel-header">
+
+                    <div class="panel-icon">
+                        ⚙
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Preferences
+                        </h2>
+
+                        <p>
+                            Customize your dashboard experience
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="preference">
+
+                    <div>
+
+                        <h3>
+                            Energy Notifications
+                        </h3>
+
+                        <p>
+                            Receive alerts when energy usage becomes high.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="notificationToggle"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="preference">
+
+                    <div>
+
+                        <h3>
+                            High Consumption Alerts
+                        </h3>
+
+                        <p>
+                            Highlight appliances consuming unusually high energy.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="alertToggle"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="preference">
+
+                    <div>
+
+                        <h3>
+                            Daily Energy Target
+                        </h3>
+
+                        <p>
+                            Compare your home's daily usage against a target.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="targetToggle"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="preference">
+
+                    <div>
+
+                        <h3>
+                            Cloud Data Sync
+                        </h3>
+
+                        <p>
+                            Keep appliance and profile data synchronized with Firebase.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            checked
+                            disabled
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= ACCOUNT ================= -->
+
+            <div class="panel danger-zone">
+
+                <div class="panel-header">
+
+                    <div class="panel-icon">
+                        ↪
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Account
+                        </h2>
+
+                        <p>
+                            Manage your current session
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="logout-btn"
+                    id="logoutBtn"
+                >
+                    Sign Out of SmartHome
+                </button>
+
+
+                <button
+                    class="delete-btn"
+                    id="deleteBtn"
+                >
+                    Clear Local Preferences
+                </button>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<script type="module">
+
+    import {
+        auth,
+        database,
+        ref,
+        get,
+        update,
+        signOut,
+        onAuthStateChanged
+    } from "./firebase.js";
+
+
+    let currentUser = null;
+
+
+
+    /* ================= MESSAGE ================= */
+
+    function showMessage(text, type = "success") {
+
+        const message =
+            document.getElementById("message");
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+        setTimeout(() => {
+
+            message.className =
+                "message";
+
+        }, 3000);
+    }
+
+
+
+    /* ================= LOAD SETTINGS ================= */
+
+    async function loadSettings(user) {
+
+        currentUser = user;
+
+        try {
+
+            const userRef =
+                ref(
+                    database,
+                    `users/${user.uid}`
+                );
+
+            const snapshot =
+                await get(userRef);
+
+
+            let data = {};
+
+            if (snapshot.exists()) {
+                data = snapshot.val();
+            }
+
+
+            const name =
+                data.name ||
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "User";
+
+
+            /* PROFILE */
+
+            document.getElementById(
+                "topUserName"
+            ).textContent = name;
+
+            document.getElementById(
+                "profileName"
+            ).textContent = name;
+
+            document.getElementById(
+                "profileEmail"
+            ).textContent = user.email || "No email";
+
+            document.getElementById(
+                "nameInput"
+            ).value = name;
+
+            document.getElementById(
+                "emailInput"
+            ).value = user.email || "";
+
+
+            document.getElementById(
+                "userId"
+            ).textContent =
+                "UID: " + user.uid;
+
+
+            /* AVATARS */
+
+            const firstLetter =
+                name.charAt(0).toUpperCase();
+
+            document.getElementById(
+                "avatar"
+            ).textContent = firstLetter;
+
+            document.getElementById(
+                "largeAvatar"
+            ).textContent = firstLetter;
+
+
+            /* ENERGY SETTINGS */
+
+            if (data.settings) {
+
+                const settings =
+                    data.settings;
+
+
+                if (
+                    settings.electricityRate !==
+                    undefined
+                ) {
+
+                    document.getElementById(
+                        "rateInput"
+                    ).value =
+                        settings.electricityRate;
+
+                }
+
+
+                if (
+                    settings.monthlyTarget !==
+                    undefined
+                ) {
+
+                    document.getElementById(
+                        "targetInput"
+                    ).value =
+                        settings.monthlyTarget;
+
+                }
+
+
+                if (
+                    settings.notifications !==
+                    undefined
+                ) {
+
+                    document.getElementById(
+                        "notificationToggle"
+                    ).checked =
+                        settings.notifications;
+
+                }
+
+
+                if (
+                    settings.highConsumptionAlerts !==
+                    undefined
+                ) {
+
+                    document.getElementById(
+                        "alertToggle"
+                    ).checked =
+                        settings.highConsumptionAlerts;
+
+                }
+
+
+                if (
+                    settings.dailyTargetEnabled !==
+                    undefined
+                ) {
+
+                    document.getElementById(
+                        "targetToggle"
+                    ).checked =
+                        settings.dailyTargetEnabled;
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Settings loading error:",
+                error
+            );
+
+            showMessage(
+                "Unable to load settings.",
+                "error"
+            );
+        }
+
+    }
+
+
+
+    /* ================= PROFILE SAVE ================= */
+
+    document
+        .getElementById("profileForm")
+        .addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                if (!currentUser) {
+                    return;
+                }
+
+
+                const name =
+                    document
+                        .getElementById("nameInput")
+                        .value
+                        .trim();
+
+
+                if (!name) {
+
+                    showMessage(
+                        "Please enter your name.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                try {
+
+                    await update(
+
+                        ref(
+                            database,
+                            `users/${currentUser.uid}`
+                        ),
+
+                        {
+                            name: name
+                        }
+
+                    );
+
+
+                    document.getElementById(
+                        "topUserName"
+                    ).textContent = name;
+
+                    document.getElementById(
+                        "profileName"
+                    ).textContent = name;
+
+
+                    const firstLetter =
+                        name
+                            .charAt(0)
+                            .toUpperCase();
+
+
+                    document.getElementById(
+                        "avatar"
+                    ).textContent =
+                        firstLetter;
+
+                    document.getElementById(
+                        "largeAvatar"
+                    ).textContent =
+                        firstLetter;
+
+
+                    showMessage(
+                        "Profile updated successfully."
+                    );
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showMessage(
+                        "Unable to save profile.",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+    /* ================= ENERGY SETTINGS ================= */
+
+    document
+        .getElementById("energyForm")
+        .addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                if (!currentUser) {
+                    return;
+                }
+
+
+                const rate =
+                    Number(
+                        document
+                            .getElementById("rateInput")
+                            .value
+                    );
+
+
+                const target =
+                    Number(
+                        document
+                            .getElementById("targetInput")
+                            .value
+                    );
+
+
+                if (
+                    rate < 0 ||
+                    target <= 0
+                ) {
+
+                    showMessage(
+                        "Please enter valid energy settings.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                try {
+
+                    await update(
+
+                        ref(
+                            database,
+                            `users/${currentUser.uid}/settings`
+                        ),
+
+                        {
+                            electricityRate: rate,
+                            monthlyTarget: target
+                        }
+
+                    );
+
+
+                    showMessage(
+                        "Energy settings saved successfully."
+                    );
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showMessage(
+                        "Unable to save energy settings.",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+    /* ================= PREFERENCES ================= */
+
+    async function savePreference(
+        field,
+        value
+    ) {
+
+        if (!currentUser) {
+            return;
+        }
+
+
+        try {
+
+            await update(
+
+                ref(
+                    database,
+                    `users/${currentUser.uid}/settings`
+                ),
+
+                {
+                    [field]: value
+                }
+
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Preference error:",
+                error
+            );
+
+        }
+
+    }
+
+
+
+    document
+        .getElementById(
+            "notificationToggle"
+        )
+        .addEventListener(
+            "change",
+            event => {
+
+                savePreference(
+                    "notifications",
+                    event.target.checked
+                );
+
+            }
+        );
+
+
+
+    document
+        .getElementById(
+            "alertToggle"
+        )
+        .addEventListener(
+            "change",
+            event => {
+
+                savePreference(
+                    "highConsumptionAlerts",
+                    event.target.checked
+                );
+
+            }
+        );
+
+
+
+    document
+        .getElementById(
+            "targetToggle"
+        )
+        .addEventListener(
+            "change",
+            event => {
+
+                savePreference(
+                    "dailyTargetEnabled",
+                    event.target.checked
+                );
+
+            }
+        );
+
+
+
+    /* ================= LOGOUT ================= */
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    await signOut(auth);
+
+                    window.location.href =
+                        "login.html";
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showMessage(
+                        "Unable to sign out.",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+    /* ================= CLEAR LOCAL ================= */
+
+    document
+        .getElementById("deleteBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                localStorage.clear();
+
+                sessionStorage.clear();
+
+                showMessage(
+                    "Local preferences cleared."
+                );
+
+            }
+        );
+
+
+
+    /* ================= AUTH GUARD ================= */
+
+    onAuthStateChanged(
+        auth,
+        user => {
+
+            if (!user) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+
+            loadSettings(user);
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
